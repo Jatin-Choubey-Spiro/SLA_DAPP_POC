@@ -1,0 +1,266 @@
+/* General Styles */
+body {
+    font-family: "Arial", sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1 {
+    color: #333;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    color: #0056b3;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  p {
+    font-size: 1rem;
+    color: #555;
+    text-align: center;
+  }
+  
+  /* Button Styles */
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  button:active {
+    transform: scale(1);
+  }
+  
+  /* Input Styles */
+  input {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 90%;
+    max-width: 300px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Main Layout */
+  .main-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  /* Ribbon Styles */
+  .ribbon {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #007bff;
+    padding: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ribbon a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 10px 20px;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .ribbon a:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  .ribbon a:active {
+    transform: scale(1);
+  }
+  
+  .ribbon .home-icon {
+    width: 100px; /* Adjust the size as needed */
+    height: auto; /* Maintain the aspect ratio */
+  }
+  
+  /* Main Content */
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
+  /* Container Styles */
+  .container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 20px auto;
+    padding: 10px;
+    max-width: 1200px;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+  
+  .container > div {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    display: inline-block;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .container > div:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Agreement Details */
+  .agreement-details {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f0f8ff;
+    border: 1px solid #cce7ff;
+    border-radius: 5px;
+    text-align: left;
+  }
+  
+  .agreement-details p {
+    margin: 5px 0;
+    color: #333;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      gap: 15px;
+    }
+  
+    button {
+      display: inline-block;
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+  
+    h2 {
+      font-size: 1.25rem;
+    }
+  
+    button {
+      display: inline-block;
+      font-size: 0.9rem;
+    }
+  
+    input {
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Center Connect Wallet Button */
+  .connect-wallet {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .connect-wallet button {
+    padding: 15px 30px;
+    font-size: 1rem;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .connect-wallet button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  .connect-wallet button:active {
+    transform: scale(1);
+  }
+  
+ /* Hierarchy Container */
+.hierarchy-container {
+  width: 70%;
+  max-width: 1000px;
+  padding: 20px;
+  border-left: 3px solid #007bff;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow-y: auto;
+  font-family: 'Arial', sans-serif;
+  margin: 0 auto;
+  text-align: center; /* Center all text in the container */
+}
+
+/* Owner heading */
+.hierarchy-container h2 {
+  text-align: center; /* Keep owner heading centered */
+}
+
+/* Vendor styles */
+.hierarchy-container .vendor {
+  text-align: center; /* Center the vendor text */
+  margin-left: 0; /* Remove indentation */
+  text-decoration: underline; 
+}
+
+/* Sub-vendor styles */
+.hierarchy-container .sub-vendor {
+  text-align: center; /* Center the sub-vendor text */
+  margin-left: 0; /* Remove indentation */
+}
+
+/* Hierarchy styles */
+.hierarchy {
+  list-style-type: none; /* Remove default list styles */
+  padding: 0;
+}
+
+.hierarchy > li {
+  margin: 10px 0;
+}
+
+.sub-vendors {
+  list-style-type: none; /* Remove default list styles */
+  padding-left: 20px; /* Indent sub-vendors */
+}

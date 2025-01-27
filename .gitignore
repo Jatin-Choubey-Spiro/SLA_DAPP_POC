@@ -1,0 +1,4 @@
+package-lock.json
+frontend/node_modules
+node_modules
+frontend/server/uploads
