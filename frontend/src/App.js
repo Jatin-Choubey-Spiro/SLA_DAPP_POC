@@ -10,7 +10,7 @@ import ViewMainAgreement from "./components/ViewMainAgreement";
 import ViewSubAgreement from "./components/ViewSubAgreement";
 import Layout from "./components/Layout"; // Import Layout component
 import Web3 from "web3";
-import SpiroAgreementManager from "./contracts/SpiroAgreementManager.json";
+import SpiroAgreementManager from "./build/contracts/SpiroAgreementManager.json";
 
 const contractAddress = "0x3152Bf2B52f871D207572A51d0763663d9034604";
 
