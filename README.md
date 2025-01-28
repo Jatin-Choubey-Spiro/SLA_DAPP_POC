@@ -51,7 +51,7 @@ A decentralized application (DApp) for signing and managing Service Level Agreem
 
 4. **Move the newly created build folder, consisting of Contracts ABI .json file, to the frontend's src folder.(So that frontend can interact with the smart contract)**
 
-5. **Run the Server ```node .\frontend\server\server.js**
+5. **Run the Server - node .\frontend\server\server.js**
 
 6. ```bash
     cd frontend
@@ -59,4 +59,4 @@ A decentralized application (DApp) for signing and managing Service Level Agreem
 
 7. **Login**
 
-8. **Connect Wallet 1 and Explore**
+8. **Connect Wallet and Explore**
