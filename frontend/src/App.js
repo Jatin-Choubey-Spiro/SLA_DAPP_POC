@@ -77,23 +77,26 @@ const App = () => {
   };
 
   const estimateTransactionCost = async () => {
-    if (!contract || !account || !gasPrice || !ethPrice) return;
-
-    try {
-      const gasEstimate = await contract.methods.createAgreement(
-        "agreementHash",
-        "ipfsCID",
-        account,
-        "vendorName"
-      ).estimateGas({ from: account });
-
-      const gasPriceInWei = Web3.utils.toWei(gasPrice[1].estimatedFee.toString(), 'gwei');
-      const costInEth = Web3.utils.fromWei((gasEstimate * gasPriceInWei).toString(), 'ether');
-      const costInUsd = costInEth * ethPrice;
-
-      setTransactionCost(costInUsd);
-    } catch (error) {
-      console.error("Error estimating transaction cost:", error);
+    const gasUsed = 2267805;
+  
+    // Fetch the current gas price
+    await fetchGasPrice();
+    await fetchEthPrice();
+  
+    if (gasPrice && ethPrice) {
+      // Assuming gasPrice[1].estimatedFee is the average gas price in Gwei
+      const gasPriceInGwei = gasPrice[1].estimatedFee;
+      const gasPriceInEth = gasPriceInGwei / 1e9; // Convert Gwei to ETH
+  
+      // Calculate the transaction cost in ETH
+      const transactionCostInEth = gasUsed * gasPriceInEth;
+  
+      // Convert the transaction cost to USD
+      const transactionCostInUsd = transactionCostInEth * ethPrice;
+  
+      setTransactionCost(transactionCostInUsd);
+    } else {
+      alert("Failed to fetch gas price or ETH price. Please try again.");
     }
   };
 
