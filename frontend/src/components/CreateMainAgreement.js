@@ -20,13 +20,37 @@ function CreateMainAgreement({ contract, account }) {
 
   const addMainAgreement = async () => {
     const { agreementHash, ipfsCID, vendor, vendorName } = mainAgreementInput;
-    if (!agreementHash || !ipfsCID) {
-      alert("Please provide hash and IPFS CID");
+    if (!agreementHash || !ipfsCID || !vendor || !vendorName) {
+      alert("Please provide all fields");
       return;
     }
+
     try {
-      await contract.methods.createAgreement(agreementHash, ipfsCID, vendor, vendorName).send({ from: account });
-      alert("Main agreement added successfully.");
+      // Interact with Solidity Smart Contract
+      const tx = await contract.methods
+        .createAgreement(agreementHash, ipfsCID, vendor, vendorName)
+        .send({ from: account });
+
+      const transactionHash = tx.transactionHash; // Get blockchain transaction hash
+
+      // Send agreement details to the backend
+      const response = await fetch("http://localhost:5000/agreements", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          agreementHash,
+          ipfsCID,
+          vendor,
+          vendorName,
+          transactionHash,
+        }),
+      });
+
+      if (response.ok) {
+        alert("Main agreement added successfully.");
+      } else {
+        alert("Failed to store in database.");
+      }
     } catch (error) {
       console.error("Error adding main agreement:", error);
     }
@@ -47,9 +71,8 @@ function CreateMainAgreement({ contract, account }) {
         type="text"
         placeholder="Vendor Name"
         onChange={(e) =>
-          setMainAgreementInput({ ...mainAgreementInput, vendorName: e.target.value})
+          setMainAgreementInput({ ...mainAgreementInput, vendorName: e.target.value })
         }
-      
       />
       <button onClick={addMainAgreement}>Add Main Agreement</button>
     </div>

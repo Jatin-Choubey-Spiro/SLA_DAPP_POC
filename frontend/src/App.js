@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import axios from "axios";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from "./components/login";
 import Home from "./components/Home";
 import CreateMainAgreement from "./components/CreateMainAgreement";
@@ -12,13 +14,17 @@ import Layout from "./components/Layout"; // Import Layout component
 import Web3 from "web3";
 import SpiroAgreementManager from "./build/contracts/SpiroAgreementManager.json";
 
-const contractAddress = "0x3152Bf2B52f871D207572A51d0763663d9034604";
+const contractAddress = "0x3368E14C56B43F25cEa50CBC380284652AECA47f";
+const apiKey = "58cbbf110630457787d8a099f8b70b06"; // Your actual API key
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [account, setAccount] = useState(null);
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
+  const [gasPrice, setGasPrice] = useState(null);
+  const [ethPrice, setEthPrice] = useState(null);
+  const [transactionCost, setTransactionCost] = useState(null);
 
   const handleLogin = () => {
     setIsAuthenticated(true); // Set authentication to true after login
@@ -45,14 +51,75 @@ const App = () => {
       setAccount(accounts[0]);
     } catch (error) {
       console.error("Error connecting wallet:", error);
+      alert("Failed to connect wallet. Please try again.");
     }
   };
+
+  const fetchGasPrice = async () => {
+    try {
+      const response = await axios.get(`https://api.owlracle.info/v3/sepolia/gas?apikey=${apiKey}`);
+      console.log(response.data); // Log the response data to inspect its structure
+      setGasPrice(response.data.speeds);
+    } catch (error) {
+      console.error("Error fetching gas price:", error);
+      alert("Failed to fetch gas price. Please try again.");
+    }
+  };
+
+  const fetchEthPrice = async () => {
+    try {
+      const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
+      setEthPrice(response.data.ethereum.usd);
+    } catch (error) {
+      console.error("Error fetching ETH price:", error);
+      alert("Failed to fetch ETH price. Please try again.");
+    }
+  };
+
+  const estimateTransactionCost = async () => {
+    if (!contract || !account || !gasPrice || !ethPrice) return;
+
+    try {
+      const gasEstimate = await contract.methods.createAgreement(
+        "agreementHash",
+        "ipfsCID",
+        account,
+        "vendorName"
+      ).estimateGas({ from: account });
+
+      const gasPriceInWei = Web3.utils.toWei(gasPrice[1].estimatedFee.toString(), 'gwei');
+      const costInEth = Web3.utils.fromWei((gasEstimate * gasPriceInWei).toString(), 'ether');
+      const costInUsd = costInEth * ethPrice;
+
+      setTransactionCost(costInUsd);
+    } catch (error) {
+      console.error("Error estimating transaction cost:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEthPrice();
+  }, []);
 
   return (
     <Router>
       <div>
         {isAuthenticated ? (
           <Layout account={account} connectWallet={connectWallet}>
+            <button onClick={fetchGasPrice}>Show Current Gas Price</button>
+            {gasPrice && gasPrice.length >= 3 && (
+              <div>
+                <p>Low: {gasPrice[0].estimatedFee} Gwei</p>
+                <p>Average: {gasPrice[1].estimatedFee} Gwei</p>
+                <p>High: {gasPrice[2].estimatedFee} Gwei</p>
+              </div>
+            )}
+            <button onClick={estimateTransactionCost}>Estimate Transaction Cost</button>
+            {transactionCost && (
+              <div>
+                <p>Estimated Transaction Cost: ${transactionCost.toFixed(2)} USD</p>
+              </div>
+            )}
             <Routes>
               <Route path="/" element={<Home contract={contract} account={account} />} />
               <Route path="/create-main-agreement" element={<CreateMainAgreement contract={contract} account={account} />} />

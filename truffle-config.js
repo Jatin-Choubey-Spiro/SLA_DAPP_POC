@@ -1,6 +1,6 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 require('dotenv').config();
-// const getGasPrice = require('./utils/gasPrice');
+
 module.exports = {
   networks: {
     ganacheUI: {
@@ -24,21 +24,8 @@ module.exports = {
       timeoutBlocks: 200, // Number of blocks before a deployment times out
       skipDryRun: false,   // Skip dry run before migrations
     },
-    // holesky: {
-    //   provider: () =>
-    //     new HDWalletProvider(
-    //       process.env.PRIVATE_KEY,
-    //       process.env.HOLESKY_RPC_URL
-    //     ),
-    //   network_id: 17000, // 17000
-    //   confirmations: 3,
-    //   networkCheckTimeout: 10000,
-    //   timeoutBlocks: 200,
-    //   skipDryRun: false,
-    // }
   },
 
-  // Set default mocha options here, use special reporters, etc.
   mocha: {
     reporter: 'eth-gas-reporter',
     reporterOptions: {
@@ -56,4 +43,15 @@ module.exports = {
   api_keys: {
     etherscan: process.env.ETHERSCAN_API_KEY
   },
+  afterMigrations: async () => {
+    const { exec } = require('child_process');
+    exec('node gasConsumed.js', (err, stdout, stderr) => {
+      if (err) {
+        console.error(`Error executing gasConsumed.js: ${err}`);
+        return;
+      }
+      console.log(stdout);
+      console.error(stderr);
+    });
+  }
 };

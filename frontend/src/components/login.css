@@ -1,157 +1,61 @@
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #a6c1ff, #fffd8a, #99b7fe);
-    background-size: 500% 300%;
-    animation: gradientAnimation 10s ease infinite;
-    /* display: flex; */
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    overflow: hidden;
-    color: #333;
-  }
-  
-  /* Background Animation */
-  @keyframes gradientAnimation {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-  
-  /* Container for Login */
-  .login-container {
-    display: flex;
-    align-items: center;  /* Vertically centers the content */
-    justify-content: center;  /* Horizontally centers the content */
-    min-height: 100vh;  /* Ensure the container takes up the full height of the screen */
-    background-image: url('./logos/spiro.png');
-    background-size: 20%;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  
-  /* Login Card Styling */
-  .login-card {
-    background: rgba(255, 255, 255, 0.85);
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    padding: 40px 35px;
-    width: 400px;
-    max-width: 90%;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    backdrop-filter: blur(10px);
-  }
-  
-  .login-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-  }
-  
-  /* Title and Subtitle */
-  .login-title {
-    margin: 0;
-    font-size: 2.5em;
-    color: #444;
-    font-weight: bold;
-    letter-spacing: 1px;
-  }
-  
-  .login-title .logo-left,
-  .login-title .logo-right {
-    width: 40px;
-    height: auto;
-    margin: 0 8px;
-    vertical-align: middle;
-  }
-  
-  .login-subtitle {
-    font-size: 1em;
-    color: #666;
-    margin-bottom: 25px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-  }
-  
-  /* Input Group */
-  .input-group {
-    margin-bottom: 20px;
-    text-align: left;
-  }
-  
-  .input-group label {
-    font-size: 1em;
-    color: #444;
-    font-weight: 600;
-    display: block;
-    margin-bottom: 8px;
-  }
-  
-  .input-group input {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #8a92d7;
-    border-radius: 8px;
-    font-size: 1em;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .input-group input:focus {
-    outline: none;
-    border-color: rgb(242, 255, 0);
-    box-shadow: 0 0 10px rgba(255, 154, 158, 0.5);
-  }
-  
-  /* Login Button */
-  .login-button {
-    background: linear-gradient(135deg, #001aff, #6b77ea);
-    border: none;
-    color: rgb(242, 255, 0);
-    font-size: 1.2em;
-    font-weight: bold;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.4s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    width: 100%;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
-  
-  .login-button:hover {
-    background: linear-gradient(135deg, rgb(242, 255, 0), rgb(248, 255, 116));
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 94, 143, 0.4);
-    color: #001aff;
-  }
-  
-  .login-button:active {
-    transform: translateY(2px);
-  }
-  
-  /* Media Queries for Mobile Responsiveness */
-  @media (max-width: 450px) {
-    .login-card {
-      width: 95%;
-      padding: 30px 20px;
-    }
-  
-    .login-title {
-      font-size: 2em;
-    }
-  
-    .login-subtitle {
-      font-size: 0.9em;
-    }
-  
-    .login-button {
-      font-size: 1em;
-      padding: 10px 15px;
-    }
-  }
+/* Background with a modern gradient and subtle animation */
+.login-container {
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background-size: 200% 200%;
+  animation: bgAnimation 10s infinite alternate;
+}
+
+@keyframes bgAnimation {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 40px;
+  width: 380px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+/* Input fields */
+.form-control {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 10px;
+  font-size: 1rem;
+  color: white;
+  transition: 0.3s ease;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.form-control:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Button with hover effects */
+.btn-primary {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #ff4b2b, #ff416c);
+  transform: scale(1.05);
+}
+
+.btn-primary:active {
+  transform: scale(0.95);
+}

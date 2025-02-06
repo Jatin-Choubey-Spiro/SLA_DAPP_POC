@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Web3 from "web3";
 import "./Home.css"; // Import Home.css for styling
 
-const contractAddress = "0x3152Bf2B52f871D207572A51d0763663d9034604";
+const contractAddress = "0x3368E14C56B43F25cEa50CBC380284652AECA47f";
 
 function Home({ contract, account }) {
   const [hierarchy, setHierarchy] = useState({});
