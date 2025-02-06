@@ -5,3 +5,4 @@ frontend/server/uploads
 frontend/server/.env
 build
 src/build
+.env
