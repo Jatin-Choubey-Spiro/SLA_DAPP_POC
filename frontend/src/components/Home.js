@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Web3 from "web3";
-import "./Home.css"; // Import Home.css for styling
+import "./Home.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const contractAddress = "0x0b03DDBDcaF0F5446711aBA02919f6a304c664a5";
-
-function Home({ contract, account }) {
+function Home({ contract }) {
   const [hierarchy, setHierarchy] = useState({});
   const [owner, setOwner] = useState(null);
 
   useEffect(() => {
     if (contract) {
       fetchHierarchy(contract);
+      fetchOwner();
     }
   }, [contract]);
 
@@ -25,28 +24,21 @@ function Home({ contract, account }) {
     }
   };
 
-  useEffect(() => {
-    if (contract) {
-      fetchOwner();
-    }
-  }, [contract]);
-
   const fetchHierarchy = async (contractInstance) => {
     if (!contractInstance) return;
 
     const hierarchyData = {};
     try {
       const agreementCount = await contractInstance.methods.agreementCount().call();
-
       for (let i = 0; i < agreementCount; i++) {
         const agreement = await contractInstance.methods.viewAgreement(i).call();
-        const vendorName = agreement.vendorName; // Fetch vendorName
+        const vendorName = agreement.vendorName;
         if (!hierarchyData[vendorName]) {
           hierarchyData[vendorName] = { isComplete: agreement.isComplete, subVendors: [] };
         }
         for (let j = 0; j < agreement.subAgreementCount; j++) {
           const subAgreement = await contractInstance.methods.viewSubAgreement(i, j).call();
-          const subVendorName = subAgreement.subVendorName; // Fetch subVendorName
+          const subVendorName = subAgreement.subVendorName;
           hierarchyData[vendorName].subVendors.push({
             name: subVendorName,
             isComplete: subAgreement.isComplete,
@@ -58,45 +50,47 @@ function Home({ contract, account }) {
       console.error("Error fetching hierarchy:", error);
     }
   };
-
-  const renderHierarchy = (hierarchy) => {
-    return (
-      <ul className="hierarchy">
-        {Object.keys(hierarchy).map((vendorName, vendorIndex) => (
-          <li key={vendorName}>
-            <h3
-              className="vendor"
-              style={{
-                color: hierarchy[vendorName].isComplete ? "green" : "red",
-              }}
-            >
-              {vendorIndex}. Vendor: {vendorName}
-            </h3>
-            {hierarchy[vendorName].subVendors.length > 0 && (
-              <ul className="sub-vendors">
-                {hierarchy[vendorName].subVendors.map((subVendor, subVendorIndex) => (
-                  <li
-                    key={`${vendorName}-${subVendorIndex}`}
-                    className="sub-vendor"
-                    style={{
-                      color: subVendor.isComplete ? "green" : "red",
-                    }}
-                  >
-                    {vendorIndex}.{subVendorIndex} SubVendor: {subVendor.name}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-        ))}
-      </ul>
-    );
-  };
-
+<h2><strong>Owner:</strong> {owner}</h2>
   return (
-    <div className="hierarchy-container">
-      <h2>Owner: {owner}</h2>
-      {renderHierarchy(hierarchy)}
+    <div className="container mt-4">
+      {/* Owner at the top (Not in grid) */}
+      <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Owner:</strong> {owner}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+      {/* Vendors & SubVendors below */}
+      <div className="row">
+        {Object.keys(hierarchy).map((vendorName, vendorIndex) => (
+          <div key={vendorName} className="col-12 mb-3">
+            <div className="card vendor-card">
+              <div className="card-header bg-primary text-white">
+                <h5 className="mb-0">
+                  {vendorIndex}. Vendor: {vendorName}{" "}
+                  <span className={`badge ${hierarchy[vendorName].isComplete ? "bg-success" : "bg-danger"}`}>
+                    {hierarchy[vendorName].isComplete ? "Complete" : "Pending"}
+                  </span>
+                </h5>
+              </div>
+              <div className="card-body">
+                {hierarchy[vendorName].subVendors.length > 0 ? (
+                  <ul className="list-group">
+                    {hierarchy[vendorName].subVendors.map((subVendor, subVendorIndex) => (
+                      <li
+                        key={`${vendorName}-${subVendorIndex}`}
+                        className={`list-group-item d-flex justify-content-between align-items-center`}
+                      >
+                        {vendorIndex}.{subVendorIndex} SubVendor: {subVendor.name}
+                        <span className={`badge ${subVendor.isComplete ? "bg-success" : "bg-danger"}`}>
+                          {subVendor.isComplete ? "Complete" : "Pending"}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted">No sub-vendors</p>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
