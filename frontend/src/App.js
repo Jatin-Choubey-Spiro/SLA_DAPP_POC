@@ -14,7 +14,7 @@ import Layout from "./components/Layout"; // Import Layout component
 import Web3 from "web3";
 import SpiroAgreementManager from "./build/contracts/SpiroAgreementManager.json";
 
-const contractAddress = "0x52703e97f3f1592138a3e6ae86E26F241afE82CA";
+const contractAddress = "0x4B8c7C3B86285793216A70e4f2f87993e7ee301a";
 const apiKey = "58cbbf110630457787d8a099f8b70b06"; // Your actual API key
 
 const App = () => {

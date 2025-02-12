@@ -54,7 +54,7 @@ function Home({ contract }) {
   return (
     <div className="container mt-4">
       {/* Owner at the top (Not in grid) */}
-      <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Owner:</strong> {owner}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+      <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Owner:</strong> {owner} <strong>(Spiro EV)</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
       {/* Vendors & SubVendors below */}
       <div className="row">
         {Object.keys(hierarchy).map((vendorName, vendorIndex) => (
@@ -62,7 +62,7 @@ function Home({ contract }) {
             <div className="card vendor-card">
               <div className="card-header bg-primary text-white">
                 <h5 className="mb-0">
-                  {vendorIndex}. Vendor: {vendorName}{" "}
+                  {vendorIndex}. &nbsp; {vendorName}{" "}
                   <span className={`badge ${hierarchy[vendorName].isComplete ? "bg-success" : "bg-danger"}`}>
                     {hierarchy[vendorName].isComplete ? "Complete" : "Pending"}
                   </span>
@@ -76,7 +76,7 @@ function Home({ contract }) {
                         key={`${vendorName}-${subVendorIndex}`}
                         className={`list-group-item d-flex justify-content-between align-items-center`}
                       >
-                        {vendorIndex}.{subVendorIndex} SubVendor: {subVendor.name}
+                        {vendorIndex}.{subVendorIndex} &nbsp; {subVendor.name}
                         <span className={`badge ${subVendor.isComplete ? "bg-success" : "bg-danger"}`}>
                           {subVendor.isComplete ? "Complete" : "Pending"}
                         </span>
