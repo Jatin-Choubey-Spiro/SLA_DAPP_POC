@@ -85,7 +85,7 @@ input:focus {
 }
 
 .ribbon a {
-  color: white;
+  color: rgb(255, 242, 0);
   text-decoration: none;
   font-size: 1rem;
   padding: 10px 20px;
@@ -202,7 +202,7 @@ input:focus {
   font-size: 1rem;
   border-radius: 5px;
   background-color: #007bff;
-  color: white;
+  color: rgb(255, 247, 0);
   border: none;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;

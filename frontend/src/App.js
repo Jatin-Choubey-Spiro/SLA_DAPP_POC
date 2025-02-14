@@ -10,12 +10,15 @@ import SignMainAgreement from "./components/SignMainAgreement";
 import SignSubAgreement from "./components/SignSubAgreement";
 import ViewMainAgreement from "./components/ViewMainAgreement";
 import ViewSubAgreement from "./components/ViewSubAgreement";
-import Layout from "./components/Layout"; // Import Layout component
+import Layout from "./components/Layout";
 import Web3 from "web3";
 import SpiroAgreementManager from "./build/contracts/SpiroAgreementManager.json";
 
-const contractAddress = "0x4B8c7C3B86285793216A70e4f2f87993e7ee301a";
-const apiKey = "58cbbf110630457787d8a099f8b70b06"; // Your actual API key
+import spiro from "./pics/spiro.png";   // Importing images
+import rapido from "./pics/rapido.png"; 
+
+const contractAddress = "0x66A44a9a02490732fF5A67A4E83492780bca6038";
+const apiKey = "58cbbf110630457787d8a099f8b70b06";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -25,9 +28,10 @@ const App = () => {
   const [gasPrice, setGasPrice] = useState(null);
   const [ethPrice, setEthPrice] = useState(null);
   const [transactionCost, setTransactionCost] = useState(null);
+  const [showPreview, setShowPreview] = useState(false); // Preview state
 
   const handleLogin = () => {
-    setIsAuthenticated(true); // Set authentication to true after login
+    setIsAuthenticated(true);
   };
 
   useEffect(() => {
@@ -103,13 +107,12 @@ const App = () => {
   useEffect(() => {
     fetchEthPrice();
   }, []);
-
   return (
     <Router>
-      <div>
+      <div style={{ position: "relative", minHeight: "100vh" }}>
         {isAuthenticated ? (
           <Layout account={account} connectWallet={connectWallet}>
-            <button onClick={fetchGasPrice}>Show Current Gas Price</button>
+<button onClick={fetchGasPrice}>Show Current Gas Price</button>
             {gasPrice && gasPrice.length >= 3 && (
               <div>
                 <p>Low: {gasPrice[0].estimatedFee} Gwei</p>
@@ -135,6 +138,69 @@ const App = () => {
           </Layout>
         ) : (
           <Login onLogin={handleLogin} />
+        )}
+
+        {/* Tiny Preview Button in Bottom Left */}
+        <button
+          onClick={() => setShowPreview(true)}
+          style={{
+            position: "fixed",
+            bottom: "15px",
+            left: "15px",
+            background: "#007bff",
+            color: "white",
+            border: "none",
+            borderRadius: "50%",
+            width: "30px",
+            height: "30px",
+            fontSize: "14px",
+            cursor: "pointer",
+            boxShadow: "0px 2px 5px rgba(0,0,0,0.3)"
+          }}
+        >
+          🔍
+        </button>
+
+        {/* Image Preview Popup */}
+        {showPreview && (
+          <div
+            style={{
+              position: "fixed",
+              bottom: "50px",
+              left: "15px",
+              background: "white",
+              padding: "10px",
+              borderRadius: "10px",
+              boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
+              zIndex: 1000
+            }}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setShowPreview(false)}
+              style={{
+                position: "absolute",
+                top: "5px",
+                right: "5px",
+                background: "red",
+                color: "white",
+                border: "none",
+                borderRadius: "50%",
+                width: "20px",
+                height: "20px",
+                fontSize: "12px",
+                cursor: "pointer"
+              }}
+            >
+              X
+            </button>
+
+            {/* Images */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+              <img src={spiro} alt="Spiro" style={{ width: "100px", height: "auto", borderRadius: "5px" }} />
+              <img src={rapido} alt="Rapido" style={{ width: "100px", height: "auto", borderRadius: "5px" }} />
+            </div>
+          </div>
         )}
       </div>
     </Router>
