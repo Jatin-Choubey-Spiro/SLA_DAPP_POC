@@ -57,7 +57,7 @@ function CreateMainAgreement({ contract, account }) {
   };
 
   return (
-    <div>
+    <div className="closeElem">
       <h2>Add Main Agreement</h2>
       <FileUpload onFileUpload={handleMainFileUpload} />
       <input
@@ -74,7 +74,9 @@ function CreateMainAgreement({ contract, account }) {
           setMainAgreementInput({ ...mainAgreementInput, vendorName: e.target.value })
         }
       />
-      <button onClick={addMainAgreement}>Add Main Agreement</button>
+      <div className="btn-cont">
+        <button onClick={addMainAgreement}>Add Main Agreement</button>
+      </div>
     </div>
   );
 }

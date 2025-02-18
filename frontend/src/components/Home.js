@@ -50,7 +50,6 @@ function Home({ contract }) {
       console.error("Error fetching hierarchy:", error);
     }
   };
-<h2><strong>Owner:</strong> {owner}</h2>
   return (
     <div className="container mt-4">
       {/* Owner at the top (Not in grid) */}

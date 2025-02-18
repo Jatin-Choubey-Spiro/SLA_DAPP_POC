@@ -65,7 +65,7 @@ function CreateSubAgreement({ contract, account }) {
   };
 
   return (
-    <div>
+    <div className="closeElem">
       <h2>Add Sub-Agreement</h2>
       <input
         type="number"
@@ -89,7 +89,9 @@ function CreateSubAgreement({ contract, account }) {
           setSubAgreementInput({ ...subAgreementInput, subVendorName: e.target.value })
         }
       />
-      <button onClick={addSubAgreement}>Add Sub-Agreement</button>
+      <div className="btn-cont">
+        <button onClick={addSubAgreement}>Add Sub-Agreement</button>
+      </div>
     </div>
   );
 }

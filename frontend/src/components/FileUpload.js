@@ -60,11 +60,24 @@ const FileUpload = ({ onFileUpload }) => {
     <div className="file-upload-container">
       <form onSubmit={handleSubmit} className="file-upload-form">
         <input type="file" onChange={handleFileChange} className="file-input" />
-        <button type="submit" className="upload-button">Upload</button>
+        <button
+          type="submit"
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#4CAF50",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer"
+          }}
+        >
+          Upload
+        </button>
+
       </form>
       {preview && <img src={preview} alt="File preview" className="file-preview" />}
       {!preview && file && <p>File selected: {file.name}</p>}
-      {loading && <div className="loading">Loading...</div>}
+      {loading && <div className="loading-spinner"></div>}
       {hash && <p>SHA-256 Hash: {hash}</p>}
       {fileUrl && <p>IPFS URL: <a href={fileUrl} target="_blank" rel="noopener noreferrer">{fileUrl}</a></p>}
     </div>

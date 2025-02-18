@@ -1,7 +1,9 @@
 /* General Styles */
 body {
   font-family: "Arial", sans-serif;
-  background-color: #f9f9f9;
+  background: linear-gradient(300deg, #ffffff, #e5ff3a, #ffffff);
+  background-size: 200% 200%;
+  animation: bgAnimation 12s infinite alternate;
   margin: 0;
   padding: 0;
 }
@@ -27,6 +29,10 @@ p {
 }
 
 /* Button Styles */
+.btn-cont{
+  display: flex;
+  justify-content: center;
+}
 button {
   padding: 10px 20px;
   background-color: #007bff;
@@ -310,4 +316,48 @@ p {
 /* List group styling */
 .list-group-item {
   font-size: 1rem;
+}
+.closeElem {
+  background-color: #e5ebee; /* Light grey background for a clean look */
+  border: 1px solid #ddd; /* Subtle border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Space inside the div */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  max-width: 600px; /* Limit the width */
+  margin: 20px auto; /* Center the div horizontally */
+  display: flex; /* Use flexbox for responsive layout */
+  flex-direction: column; /* Arrange children in a column */
+}
+
+.closeElem h2 {
+  font-size: 1.5em; /* Larger font size for the heading */
+  color: #333; /* Dark grey color for the text */
+  margin-bottom: 15px; /* Space below the heading */
+}
+
+.closeElem input {
+  width: calc(100% - 20px); /* Full width minus padding */
+  padding: 10px; /* Space inside the input */
+  margin-bottom: 10px; /* Space below each input */
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 1em; /* Standard font size */
+}
+
+.closeElem .btn-cont {
+  text-align: right; /* Align button to the right */
+}
+
+.closeElem button {
+  background-color: #007bff; /* Blue background */
+  color: white; /* White text */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 10px 20px; /* Space inside the button */
+  font-size: 1em; /* Standard font size */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.closeElem button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }

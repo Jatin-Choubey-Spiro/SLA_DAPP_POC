@@ -36,7 +36,7 @@ function SignMainAgreement({ contract, account }) {
   };
 
   return (
-    <div>
+    <div className="closeElem">
       <h2>Sign Main Agreement</h2>
       <input
         type="number"
@@ -47,17 +47,19 @@ function SignMainAgreement({ contract, account }) {
           checkAgreementStatus(id);
         }}
       />
-      <button
-        onClick={signMainAgreement}
-        disabled={isAgreementComplete}
-        style={{
-          backgroundColor: isAgreementComplete ? "grey" : "blue",
-          color: isAgreementComplete ? "darkgrey" : "white",
-          cursor: isAgreementComplete ? "not-allowed" : "pointer",
-        }}
-      >
-        {isAgreementComplete ? "Agreement Complete" : "Sign Agreement"}
-      </button>
+      <div className="btn-cont">
+        <button
+          onClick={signMainAgreement}
+          disabled={isAgreementComplete}
+          style={{
+            backgroundColor: isAgreementComplete ? "grey" : "blue",
+            color: isAgreementComplete ? "darkgrey" : "white",
+            cursor: isAgreementComplete ? "not-allowed" : "pointer",
+          }}
+        >
+          {isAgreementComplete ? "Agreement Complete" : "Sign Agreement"}
+        </button>
+      </div>
     </div>
   );
 }

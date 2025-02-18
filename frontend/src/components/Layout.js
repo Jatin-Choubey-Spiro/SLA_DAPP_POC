@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Home.css"; // Import Home.css for styling
 import homeIcon from "./logos/image.png"; // Import the image
+import contractZ from "./logos/contractZ.png";
 
 const Layout = ({ account, connectWallet, children }) => {
   return (
@@ -18,7 +19,9 @@ const Layout = ({ account, connectWallet, children }) => {
         <Link to="/view-sub-agreement">View Sub Agreement</Link>
       </div>
       <div className="main-content">
-        <h1>Spiro Agreement Manager</h1>
+      <h1>
+      <img src={contractZ} alt="Spiro Agreement Manager" style={{ height: "80px", padding: "20px"}} />
+    </h1>
         <div className="connect-wallet">
           {!account && <button onClick={connectWallet}>Connect Wallet</button>}
         </div>

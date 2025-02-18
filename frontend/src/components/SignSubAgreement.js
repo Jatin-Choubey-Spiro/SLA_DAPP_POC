@@ -34,7 +34,7 @@ function SignSubAgreement({ contract, account }) {
   };
 
   return (
-    <div>
+    <div className="closeElem">
       <h2>Sign Sub Agreement</h2>
       <input
         type="number"
@@ -60,17 +60,19 @@ function SignSubAgreement({ contract, account }) {
           }
         }}
       />
-      <button
-        onClick={signSubAgreement}
-        disabled={isSubAgreementComplete}
-        style={{
-          backgroundColor: isSubAgreementComplete ? "grey" : "blue",
-          color: isSubAgreementComplete ? "darkgrey" : "white",
-          cursor: isSubAgreementComplete ? "not-allowed" : "pointer",
-        }}
-      >
-        {isSubAgreementComplete ? "Sub Agreement Complete" : "Sign Sub Agreement"}
-      </button>
+      <div className="btn-cont">
+        <button
+          onClick={signSubAgreement}
+          disabled={isSubAgreementComplete}
+          style={{
+            backgroundColor: isSubAgreementComplete ? "grey" : "blue",
+            color: isSubAgreementComplete ? "darkgrey" : "white",
+            cursor: isSubAgreementComplete ? "not-allowed" : "pointer",
+          }}
+        >
+          {isSubAgreementComplete ? "Sub Agreement Complete" : "Sign Sub Agreement"}
+        </button>
+      </div>
     </div>
   );
 }

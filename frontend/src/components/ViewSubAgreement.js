@@ -19,7 +19,7 @@ function ViewSubAgreement({ contract, account }) {
   };
 
   return (
-    <div>
+    <div className="closeElem">
       <h2>View Sub-Agreement</h2>
       <input
         type="number"
@@ -35,14 +35,19 @@ function ViewSubAgreement({ contract, account }) {
           setViewSubInput({ ...viewSubInput, subAgreementId: e.target.value })
         }
       />
-      <button onClick={viewSubAgreement}>View Sub-Agreement</button>
+      <div className="btn-cont">
+        <button onClick={viewSubAgreement}>View Sub-Agreement</button>
+      </div>
       {subAgreementDetails && (
         <div className="agreement-details">
           <p>Sub-Agreement Hash: {subAgreementDetails.agreementHash}</p>
           <p>IPFS CID: {subAgreementDetails.ipfsCID}</p>
           <p>Address: {subAgreementDetails.subVendor}</p>
           <p>Name: {subAgreementDetails.subVendorName}</p>
-          <p>Is Complete: {subAgreementDetails.isComplete.toString()}</p>
+          <p>Agreement Status: <span style={{ color: subAgreementDetails.isComplete.toString() === "false" ? "red" : "green" }}>
+                {subAgreementDetails.isComplete.toString() === "false" ? "Pending" : "Complete"}
+            </span>
+          </p>
         </div>
       )}
     </div>

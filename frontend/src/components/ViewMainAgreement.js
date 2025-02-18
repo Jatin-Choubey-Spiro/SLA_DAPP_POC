@@ -15,21 +15,26 @@ function ViewMainAgreement({ contract, account }) {
   };
 
   return (
-    <div>
+    <div className="closeElem">
       <h2>View Main Agreement</h2>
       <input
         type="number"
         placeholder="Agreement ID"
         onChange={(e) => setViewMainInput(e.target.value)}
       />
-      <button onClick={viewMainAgreement}>View Main Agreement</button>
+      <div className="btn-cont">
+        <button onClick={viewMainAgreement}>View Main Agreement</button>
+      </div>
       {agreementDetails && (
         <div className="agreement-details">
           <p>Agreement Hash: {agreementDetails.agreementHash}</p>
           <p>IPFS CID: {agreementDetails.ipfsCID}</p>
           <p>Address: {agreementDetails.vendor}</p>
           <p>Name: {agreementDetails.vendorName}</p>
-          <p>Is Complete: {agreementDetails.isComplete.toString()}</p>
+          <p>Agreement Status: <span style={{ color: agreementDetails.isComplete.toString() === "false" ? "red" : "green" }}>
+                {agreementDetails.isComplete.toString() === "false" ? "Pending" : "Complete"}
+            </span>
+          </p>
         </div>
       )}
     </div>
