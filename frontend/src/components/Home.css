@@ -1,7 +1,7 @@
 /* General Styles */
 body {
   font-family: "Arial", sans-serif;
-  background: linear-gradient(300deg, #ffffff, #e5ff3a, #ffffff);
+  background: linear-gradient(300deg, #b8c0ff, #ebff67, #9ea9ff);
   background-size: 200% 200%;
   animation: bgAnimation 12s infinite alternate;
   margin: 0;

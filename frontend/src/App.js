@@ -16,6 +16,8 @@ import SpiroAgreementManager from "./build/contracts/SpiroAgreementManager.json"
 
 import spiro from "./pics/spiro.png";   // Importing images
 import rapido from "./pics/rapido.png"; 
+import spiroLogo from "./pics/spiroLogo.png";
+import contractZ from "./pics/contractZ.png";
 import Slide1 from "./Guide/Slide1.PNG";
 import Slide2 from "./Guide/Slide2.PNG";
 import Slide3 from "./Guide/Slide3.PNG";
@@ -189,21 +191,25 @@ const App = () => {
     background: "red",
     color: "white",
     border: "none",
-    borderRadius: "50%",
+    borderRadius: "10%",
     width: "30px",
     height: "30px",
-    fontSize: "16px",
+    fontSize: "13px",
     cursor: "pointer"
   }}
->
-  X
-</button>
+>X </button>
     <br></br>
-    <h1><strong>ContractZ</strong> by Spiro</h1>
+    <h1>
+      <img src={contractZ} alt="contractZ Logo" style={{ height: "30px" }} />  
+      &nbsp;by&nbsp;
+      <img src={spiroLogo} alt="Spiro Logo" style={{ height: "50px" }} />
+    </h1>
+
+
     <p style={{ fontSize: "16px", fontWeight: "bold", textAlign: "center" }}>
-      Welcome to ContractZ, a blockchain-powered digital agreement platform designed for secure, transparent, and automated contract management. Unlike traditional signing platforms, ContractZ ensures tamper-proof agreements and enforces hierarchical signing workflows. <br /><br />
+      Welcome to contractZ, a blockchain-powered digital agreement platform designed for secure and transparent contract management. Unlike traditional signing platforms, contractZ ensures tamper-proof agreements and enforces hierarchical signing workflows. <br /><br />
       
-      <strong>How It Works</strong><br />
+      <strong style={{fontSize: "25px"}}>How It Works</strong><br />
       <strong>1. Agreement Creation:</strong><br />
       • Spiro EV (Owner) uploads an agreement for a Level 1 vendor.<br />
       • The document is hashed (SHA-256) and stored on IPFS for security.<br />
@@ -220,13 +226,13 @@ const App = () => {
       <strong>4. Real-Time Visual Representation:</strong><br />
       • Agreements are displayed in a tree format, making tracking easy and intuitive.<br /><br />
 
-      <strong>Why ContractZ?</strong><br />
+      <strong>Why contractZ?</strong><br />
       ✅ Tamper-Proof & Immutable Agreements<br />
       ✅ Clear, Visual Hierarchical Structure<br />
       ✅ Automated, Role-Based Signing Workflow<br />
       ✅ Full Transparency & Blockchain Verification<br /><br />
 
-      ContractZ simplifies digital contract management, ensuring security, compliance, and trust in every agreement. 🚀
+      contractZ simplifies digital contract management, ensuring security, compliance, and trust in every agreement. 🚀
     </p>
 
     
