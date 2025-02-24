@@ -41,7 +41,17 @@ function ViewSubAgreement({ contract, account }) {
       {subAgreementDetails && (
         <div className="agreement-details">
           <p>Sub-Agreement Hash: {subAgreementDetails.agreementHash}</p>
-          <p>IPFS CID: {subAgreementDetails.ipfsCID}</p>
+          {/* <p>IPFS CID: {subAgreementDetails.ipfsCID}</p> */}
+          <p>
+            IPFS CID:{" "}
+            <a
+              href={`https://gateway.pinata.cloud/ipfs/${subAgreementDetails.ipfsCID}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {subAgreementDetails.ipfsCID}
+            </a>
+          </p>
           <p>Address: {subAgreementDetails.subVendor}</p>
           <p>Name: {subAgreementDetails.subVendorName}</p>
           <p>Agreement Status: <span style={{ color: subAgreementDetails.isComplete.toString() === "false" ? "red" : "green" }}>

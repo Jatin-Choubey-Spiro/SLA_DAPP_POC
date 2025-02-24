@@ -24,7 +24,7 @@ import Slide3 from "./Guide/Slide3.PNG";
 import Slide4 from "./Guide/Slide4.PNG";
 import Slide5 from "./Guide/Slide5.PNG";
 
-const contractAddress = "0x0b655A7bEf2bE45D8D59a7d593Dc970172239296";
+const contractAddress = "0xDC3342E84fbe138057e3f76133111C834EC1AA2d";
 const apiKey = "58cbbf110630457787d8a099f8b70b06";
 
 const App = () => {

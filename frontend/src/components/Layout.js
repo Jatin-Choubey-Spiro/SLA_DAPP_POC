@@ -15,8 +15,8 @@ const Layout = ({ account, connectWallet, children }) => {
         <Link to="/create-sub-agreement">Create Sub Agreement</Link>
         <Link to="/sign-main-agreement">Sign Main Agreement</Link>
         <Link to="/sign-sub-agreement">Sign Sub Agreement</Link>
-        <Link to="/view-main-agreement">View Main Agreement</Link>
-        <Link to="/view-sub-agreement">View Sub Agreement</Link>
+        {/* <Link to="/view-main-agreement">View Main Agreement</Link>
+        <Link to="/view-sub-agreement">View Sub Agreement</Link> */}
       </div>
       <div className="main-content">
       <h1>

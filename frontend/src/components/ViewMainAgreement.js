@@ -28,11 +28,26 @@ function ViewMainAgreement({ contract, account }) {
       {agreementDetails && (
         <div className="agreement-details">
           <p>Agreement Hash: {agreementDetails.agreementHash}</p>
-          <p>IPFS CID: {agreementDetails.ipfsCID}</p>
+          <p>
+            IPFS CID:{" "}
+            <a
+              href={`https://gateway.pinata.cloud/ipfs/${agreementDetails.ipfsCID}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {agreementDetails.ipfsCID}
+            </a>
+          </p>
           <p>Address: {agreementDetails.vendor}</p>
           <p>Name: {agreementDetails.vendorName}</p>
-          <p>Agreement Status: <span style={{ color: agreementDetails.isComplete.toString() === "false" ? "red" : "green" }}>
-                {agreementDetails.isComplete.toString() === "false" ? "Pending" : "Complete"}
+          <p>
+            Agreement Status:{" "}
+            <span
+              style={{
+                color: agreementDetails.isComplete.toString() === "false" ? "red" : "green",
+              }}
+            >
+              {agreementDetails.isComplete.toString() === "false" ? "Pending" : "Complete"}
             </span>
           </p>
         </div>
