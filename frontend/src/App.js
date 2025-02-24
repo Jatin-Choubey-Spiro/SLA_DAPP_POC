@@ -118,28 +118,23 @@ const App = () => {
       <div style={{ position: "relative", minHeight: "100vh" }}>
         {isAuthenticated ? (
           <Layout account={account} connectWallet={connectWallet}>
-          <button onClick={fetchGasPrice}>Show Current Gas Price</button>
-                      {gasPrice && gasPrice.length >= 3 && (
-                        <div>
-                          <p>Low: {gasPrice[0].estimatedFee} Gwei</p>
-                          <p>Average: {gasPrice[1].estimatedFee} Gwei</p>
-                          <p>High: {gasPrice[2].estimatedFee} Gwei</p>
-                        </div>
-                      )}
-                      <button onClick={estimateTransactionCost}>Estimate Transaction Cost</button>
-                      {transactionCost && (
-                        <div>
-                          <p>Estimated Transaction Cost: ${transactionCost.toFixed(2)} USD</p>
-                        </div>
-                      )}
+          <button onClick={estimateTransactionCost}>Transaction Fees</button>
+            {gasPrice && gasPrice.length >= 3 && transactionCost && (
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", justifyContent: "space-between", padding: "10px", border: "1px solid #ccc", borderRadius: "8px", background: "#f8f9fa" }}>
+                <span style={{ background: "red", color: "white", padding: "5px 10px", borderRadius: "5px" }}>🐢 Low: {gasPrice[0].estimatedFee} Gwei</span>
+                <span style={{ background: "green", color: "white", padding: "5px 10px", borderRadius: "5px" }}>🦊 Medium: {gasPrice[1].estimatedFee} Gwei</span>
+                <span style={{ background: "green", color: "white", padding: "5px 10px", borderRadius: "5px" }}>🦍 High: {gasPrice[2].estimatedFee} Gwei</span>
+                <span style={{ fontWeight: "bold", marginLeft: "auto" }}>💲 Estimated Cost: ${transactionCost.toFixed(2)} USD</span>
+              </div>
+            )}
             <Routes>
               <Route path="/" element={<Home contract={contract} account={account} />} />
               <Route path="/create-main-agreement" element={<CreateMainAgreement contract={contract} account={account} />} />
               <Route path="/create-sub-agreement" element={<CreateSubAgreement contract={contract} account={account} />} />
               <Route path="/sign-main-agreement" element={<SignMainAgreement contract={contract} account={account} />} />
               <Route path="/sign-sub-agreement" element={<SignSubAgreement contract={contract} account={account} />} />
-              <Route path="/view-main-agreement" element={<ViewMainAgreement contract={contract} account={account} />} />
-              <Route path="/view-sub-agreement" element={<ViewSubAgreement contract={contract} account={account} />} />
+              {/* <Route path="/view-main-agreement" element={<ViewMainAgreement contract={contract} account={account} />} />
+              <Route path="/view-sub-agreement" element={<ViewSubAgreement contract={contract} account={account} />} /> */}
             </Routes>
           </Layout>
         ) : (

@@ -134,34 +134,48 @@ input:focus {
 .container > div {
   flex: 1;
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #222;
   border-radius: 8px;
   background-color: white;
   display: inline-block;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 15px;
 }
 
 .container > div:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(255, 0, 102, 0.498);
 }
 
-/* Hierarchy List Hover Effect */
+/* Hierarchy List Simplified Hover Effect */
 .list-group-item {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border: 1px solid #22222284;
+  background-color: #f8f9fa;
+  color: #333;
+  margin-bottom: 10px;
 }
 
 .list-group-item:hover {
-  background-color: #007bff;
-  color: white;
+  background-color: #e9ecef;
+  color: #007bff;
+  border-color: #007bff;
 }
 
-/* Vendor Hover Effect - Change to White */
+/* Vendor Header Hover Effect - Subtle Change */
+.card-header.bg-primary {
+  background-color: #007bff !important;
+  color: white !important;
+  border: 3px solid #003d80 !important;
+  transition: background-color 0.2s ease, color 0.2s ease, border 0.2s ease;
+}
+
 .card-header.bg-primary:hover {
-  background-color: white !important;
-  color: #007bff !important;
+  background-color: #0056b3 !important;
+  color: #fff !important;
+  border-color: #001f40 !important;
 }
 
 /* Agreement Details */
@@ -169,7 +183,7 @@ input:focus {
   margin-top: 15px;
   padding: 15px;
   background-color: #f0f8ff;
-  border: 1px solid #cce7ff;
+  border: 3px solid #003d80;
   border-radius: 5px;
   text-align: left;
 }
@@ -178,7 +192,6 @@ input:focus {
   margin: 5px 0;
   color: #333;
 }
-
 
 /* Responsive Design */
 @media (max-width: 768px) {

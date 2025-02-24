@@ -5,6 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function Home({ contract, account }) {
   const [hierarchy, setHierarchy] = useState({});
   const [owner, setOwner] = useState(null);
+  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [selectedSubVendor, setSelectedSubVendor] = useState(null);
   const [selectedAgreement, setSelectedAgreement] = useState(null);
   const [selectedSubAgreement, setSelectedSubAgreement] = useState(null);
 
@@ -55,21 +57,33 @@ function Home({ contract, account }) {
     }
   };
 
-  const viewAgreement = async (agreementId) => {
+  const toggleAgreementView = async (vendorName, agreementId) => {
+    if (selectedVendor === vendorName) {
+      setSelectedVendor(null);
+      setSelectedAgreement(null);
+      return;
+    }
     try {
       const agreement = await contract.methods.viewAgreement(agreementId).call({ from: account });
+      setSelectedVendor(vendorName);
       setSelectedAgreement(agreement);
+      setSelectedSubVendor(null);
       setSelectedSubAgreement(null);
     } catch (error) {
       console.error("Error viewing main agreement:", error);
     }
   };
 
-  const viewSubAgreement = async (agreementId, subAgreementId) => {
+  const toggleSubAgreementView = async (subVendorName, agreementId, subAgreementId) => {
+    if (selectedSubVendor === subVendorName) {
+      setSelectedSubVendor(null);
+      setSelectedSubAgreement(null);
+      return;
+    }
     try {
       const subAgreement = await contract.methods.viewSubAgreement(agreementId, subAgreementId).call({ from: account });
+      setSelectedSubVendor(subVendorName);
       setSelectedSubAgreement(subAgreement);
-      setSelectedAgreement(null);
     } catch (error) {
       console.error("Error viewing sub-agreement:", error);
     }
@@ -82,7 +96,7 @@ function Home({ contract, account }) {
         {Object.keys(hierarchy).map((vendorName, vendorIndex) => (
           <div key={vendorName} className="col-12 mb-3">
             <div className="card vendor-card">
-              <div className="card-header bg-primary text-white" onClick={() => viewAgreement(hierarchy[vendorName].id)} style={{ cursor: "pointer" }}>
+              <div className="card-header bg-primary text-white" onClick={() => toggleAgreementView(vendorName, hierarchy[vendorName].id)} style={{ cursor: "pointer" }}>
                 <h5 className="mb-0">
                   {vendorIndex}. &nbsp; {vendorName} {" "}
                   <span className={`badge ${hierarchy[vendorName].isComplete ? "bg-success" : "bg-danger"}`}>
@@ -90,55 +104,41 @@ function Home({ contract, account }) {
                   </span>
                 </h5>
               </div>
+              {selectedVendor === vendorName && selectedAgreement && (
+                <div className="card-body">
+                  <p>Agreement Hash: {selectedAgreement.agreementHash}</p>
+                  <p>
+                    IPFS CID: <a href={`https://gateway.pinata.cloud/ipfs/${selectedAgreement.ipfsCID}`} target="_blank" rel="noopener noreferrer">{selectedAgreement.ipfsCID}</a>
+                  </p>
+                  <p>Vendor Address: {selectedAgreement.vendor}</p>
+                  <p>Vendor Name: {selectedAgreement.vendorName}</p>
+                  <p>Agreement Status: <span style={{ color: selectedAgreement.isComplete ? "green" : "red" }}>{selectedAgreement.isComplete ? "Complete" : "Pending"}</span></p>
+                </div>
+              )}
               <div className="card-body">
-                {hierarchy[vendorName].subVendors.length > 0 ? (
-                  <ul className="list-group">
-                    {hierarchy[vendorName].subVendors.map((subVendor, subVendorIndex) => (
-                      <li
-                        key={`${vendorName}-${subVendorIndex}`}
-                        className="list-group-item d-flex justify-content-between align-items-center"
-                        onClick={() => viewSubAgreement(subVendor.agreementId, subVendor.id)}
-                        style={{ cursor: "pointer" }}
-                      >
-                        {vendorIndex}.{subVendorIndex} &nbsp; {subVendor.name}
-                        <span className={`badge ${subVendor.isComplete ? "bg-success" : "bg-danger"}`}>
-                          {subVendor.isComplete ? "Complete" : "Pending"}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-muted">No sub-vendors</p>
-                )}
+                {hierarchy[vendorName].subVendors.map((subVendor, subVendorIndex) => (
+                  <div key={`${vendorName}-${subVendorIndex}`} className="list-group-item" onClick={() => toggleSubAgreementView(subVendor.name, subVendor.agreementId, subVendor.id)} style={{ cursor: "pointer" }}>
+                    {vendorIndex}.{subVendorIndex} &nbsp; {subVendor.name}
+                    <span className={`badge ${subVendor.isComplete ? "bg-success" : "bg-danger"}`}>
+                      {subVendor.isComplete ? "Complete" : "Pending"}
+                    </span>
+                    {selectedSubVendor === subVendor.name && selectedSubAgreement && (
+                      <div>
+                        <p>Sub-Agreement Hash: {selectedSubAgreement.agreementHash}</p>
+                        <p>
+                          IPFS CID: <a href={`https://gateway.pinata.cloud/ipfs/${selectedSubAgreement.ipfsCID}`} target="_blank" rel="noopener noreferrer">{selectedSubAgreement.ipfsCID}</a>
+                        </p>
+                        <p>Sub-Vendor Address: {selectedSubAgreement.subVendor}</p>
+                        <p>Sub-Vendor Name: {selectedSubAgreement.subVendorName}</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         ))}
       </div>
-      {selectedAgreement && (
-        <div className="agreement-details mt-4">
-          <h2>Agreement Details</h2>
-          <p>Agreement Hash: {selectedAgreement.agreementHash}</p>
-          <p>
-            IPFS CID: <a href={`https://gateway.pinata.cloud/ipfs/${selectedAgreement.ipfsCID}`} target="_blank" rel="noopener noreferrer">{selectedAgreement.ipfsCID}</a>
-          </p>
-          <p>Vendor Address: {selectedAgreement.vendor}</p>
-          <p>Vendor Name: {selectedAgreement.vendorName}</p>
-          <p>Agreement Status: <span style={{ color: selectedAgreement.isComplete ? "green" : "red" }}>{selectedAgreement.isComplete ? "Complete" : "Pending"}</span></p>
-        </div>
-      )}
-      {selectedSubAgreement && (
-        <div className="agreement-details mt-4">
-          <h2><strong>Sub-Agreement Details</strong></h2>
-          <p><strong>Sub-Agreement Hash:</strong> {selectedSubAgreement.agreementHash}</p>
-          <p>
-            <strong>IPFS CID:</strong> <a href={`https://gateway.pinata.cloud/ipfs/${selectedSubAgreement.ipfsCID}`} target="_blank" rel="noopener noreferrer">{selectedSubAgreement.ipfsCID}</a>
-          </p>
-          <p><strong>Sub-Vendor Address: </strong>{selectedSubAgreement.subVendor}</p>
-          <p><strong>Sub-Vendor Name: </strong>{selectedSubAgreement.subVendorName}</p>
-          <p><strong>Agreement Status: </strong><span style={{ color: selectedSubAgreement.isComplete ? "green" : "red" }}>{selectedSubAgreement.isComplete ? "Complete" : "Pending"}</span></p>
-        </div>
-      )}
     </div>
   );
 }
