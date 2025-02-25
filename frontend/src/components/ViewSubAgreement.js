@@ -1,67 +1,28 @@
-import React, { useState } from "react";
-import "./Home.css";
+import React from "react";
+import SignSubAgreement from "./SignSubAgreement";
 
-function ViewSubAgreement({ contract, account }) {
-  const [viewSubInput, setViewSubInput] = useState({
-    agreementId: "",
-    subAgreementId: "",
-  });
-  const [subAgreementDetails, setSubAgreementDetails] = useState(null);
-
-  const viewSubAgreement = async () => {
-    const { agreementId, subAgreementId } = viewSubInput;
-    try {
-      const subAgreement = await contract.methods.viewSubAgreement(agreementId, subAgreementId).call({ from: account });
-      setSubAgreementDetails(subAgreement);
-    } catch (error) {
-      console.error("Error viewing sub-agreement:", error);
-    }
-  };
+const ViewSubAgreement = ({ selectedSubAgreement, agreementId, subAgreementId, contract, account, isSubAgreementComplete }) => {
+  if (!selectedSubAgreement) return null;
 
   return (
-    <div className="closeElem">
-      <h2>View Sub-Agreement</h2>
-      <input
-        type="number"
-        placeholder="Agreement ID"
-        onChange={(e) =>
-          setViewSubInput({ ...viewSubInput, agreementId: e.target.value })
-        }
+    <div>
+      <p>Sub-Agreement Hash: {selectedSubAgreement.agreementHash}</p>
+      <p>
+        IPFS CID: <a href={`https://gateway.pinata.cloud/ipfs/${selectedSubAgreement.ipfsCID}`} target="_blank" rel="noopener noreferrer">{selectedSubAgreement.ipfsCID}</a>
+      </p>
+      <p>Sub-Vendor Address: {selectedSubAgreement.subVendor}</p>
+      <p>Sub-Vendor Name: {selectedSubAgreement.subVendorName}</p>
+      <p>Agreement Status: <span style={{ color: selectedSubAgreement.isComplete ? "green" : "red" }}>{selectedSubAgreement.isComplete ? "Complete✔" : "Pending❌"}</span></p>
+      
+      <SignSubAgreement 
+        agreementId={agreementId} 
+        subAgreementId={subAgreementId} 
+        contract={contract} 
+        account={account} 
+        isSubAgreementComplete={isSubAgreementComplete} 
       />
-      <input
-        type="number"
-        placeholder="Sub-Agreement ID"
-        onChange={(e) =>
-          setViewSubInput({ ...viewSubInput, subAgreementId: e.target.value })
-        }
-      />
-      <div className="btn-cont">
-        <button onClick={viewSubAgreement}>View Sub-Agreement</button>
-      </div>
-      {subAgreementDetails && (
-        <div className="agreement-details">
-          <p>Sub-Agreement Hash: {subAgreementDetails.agreementHash}</p>
-          {/* <p>IPFS CID: {subAgreementDetails.ipfsCID}</p> */}
-          <p>
-            IPFS CID:{" "}
-            <a
-              href={`https://gateway.pinata.cloud/ipfs/${subAgreementDetails.ipfsCID}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {subAgreementDetails.ipfsCID}
-            </a>
-          </p>
-          <p>Address: {subAgreementDetails.subVendor}</p>
-          <p>Name: {subAgreementDetails.subVendorName}</p>
-          <p>Agreement Status: <span style={{ color: subAgreementDetails.isComplete.toString() === "false" ? "red" : "green" }}>
-                {subAgreementDetails.isComplete.toString() === "false" ? "Pending" : "Complete"}
-            </span>
-          </p>
-        </div>
-      )}
     </div>
   );
-}
+};
 
 export default ViewSubAgreement;

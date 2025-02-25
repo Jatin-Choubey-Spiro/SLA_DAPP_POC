@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./Home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import ViewMainAgreement from "./ViewMainAgreement";
+import ViewSubAgreement from "./ViewSubAgreement";
+import ContextMenu from "./ContextMenu"; // Import the ContextMenu component
 
 function Home({ contract, account }) {
   const [hierarchy, setHierarchy] = useState({});
@@ -9,11 +12,14 @@ function Home({ contract, account }) {
   const [selectedSubVendor, setSelectedSubVendor] = useState(null);
   const [selectedAgreement, setSelectedAgreement] = useState(null);
   const [selectedSubAgreement, setSelectedSubAgreement] = useState(null);
+  const [isAgreementComplete, setIsAgreementComplete] = useState(false);
+  const [isSubAgreementComplete, setIsSubAgreementComplete] = useState(false);
+  const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, content: null });
 
   useEffect(() => {
     if (contract) {
-      fetchHierarchy(contract);
       fetchOwner();
+      fetchHierarchy(contract);
     }
   }, [contract]);
 
@@ -57,81 +63,68 @@ function Home({ contract, account }) {
     }
   };
 
-  const toggleAgreementView = async (vendorName, agreementId) => {
-    if (selectedVendor === vendorName) {
-      setSelectedVendor(null);
-      setSelectedAgreement(null);
-      return;
-    }
-    try {
-      const agreement = await contract.methods.viewAgreement(agreementId).call({ from: account });
-      setSelectedVendor(vendorName);
-      setSelectedAgreement(agreement);
-      setSelectedSubVendor(null);
-      setSelectedSubAgreement(null);
-    } catch (error) {
-      console.error("Error viewing main agreement:", error);
-    }
+  const toggleAgreementView = async (vendorName, agreementId, event) => {
+    event.preventDefault();
+    const agreement = await contract.methods.viewAgreement(agreementId).call();
+    setSelectedVendor(vendorName);
+    setSelectedAgreement(agreement);
+    setSelectedSubVendor(null);
+    setSelectedSubAgreement(null);
+    setIsAgreementComplete(agreement.isComplete);
+    setContextMenu({
+      visible: true,
+      x: event.clientX,
+      y: event.clientY,
+      content: <ViewMainAgreement selectedAgreement={agreement} agreementId={agreementId} contract={contract} account={account} isAgreementComplete={agreement.isComplete} />
+    });
   };
 
-  const toggleSubAgreementView = async (subVendorName, agreementId, subAgreementId) => {
-    if (selectedSubVendor === subVendorName) {
-      setSelectedSubVendor(null);
-      setSelectedSubAgreement(null);
-      return;
-    }
-    try {
-      const subAgreement = await contract.methods.viewSubAgreement(agreementId, subAgreementId).call({ from: account });
-      setSelectedSubVendor(subVendorName);
-      setSelectedSubAgreement(subAgreement);
-    } catch (error) {
-      console.error("Error viewing sub-agreement:", error);
-    }
+  const toggleSubAgreementView = async (subVendorName, agreementId, subAgreementId, event) => {
+    event.preventDefault();
+    const subAgreement = await contract.methods.viewSubAgreement(agreementId, subAgreementId).call();
+    setSelectedSubVendor(subVendorName);
+    setSelectedSubAgreement(subAgreement);
+    setIsSubAgreementComplete(subAgreement.isComplete);
+    setContextMenu({
+      visible: true,
+      x: event.clientX,
+      y: event.clientY,
+      content: <ViewSubAgreement selectedSubAgreement={subAgreement} agreementId={agreementId} subAgreementId={subAgreementId} contract={contract} account={account} isSubAgreementComplete={subAgreement.isComplete} />
+    });
+  };
+
+  const handleContextMenuClose = () => {
+    setContextMenu({ visible: false, x: 0, y: 0, content: null });
   };
 
   return (
-    <div className="container mt-4">
-      <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Owner:</strong> {owner} <strong>(Spiro EV)</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+    <div className="container mt-4" onClick={handleContextMenuClose}>
+      <h2><strong>Owner:</strong> {owner} <strong>(Spiro EV)</strong></h2>
+
       <div className="row">
         {Object.keys(hierarchy).map((vendorName, vendorIndex) => (
-          <div key={vendorName} className="col-12 mb-3">
-            <div className="card vendor-card">
-              <div className="card-header bg-primary text-white" onClick={() => toggleAgreementView(vendorName, hierarchy[vendorName].id)} style={{ cursor: "pointer" }}>
-                <h5 className="mb-0">
-                  {vendorIndex}. &nbsp; {vendorName} {" "}
-                  <span className={`badge ${hierarchy[vendorName].isComplete ? "bg-success" : "bg-danger"}`}>
-                    {hierarchy[vendorName].isComplete ? "Complete" : "Pending"}
-                  </span>
-                </h5>
+          <div key={vendorName} className="col-md-4 mb-3">
+            <div className="card">
+              {/* Main Agreement Header */}
+              <div
+                className="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+                onClick={(event) => toggleAgreementView(vendorName, hierarchy[vendorName].id, event)}
+                style={{ cursor: "pointer" }}
+              >
+                <h5>{vendorIndex + 1}. {vendorName}</h5>
+                <span className={`badge ${hierarchy[vendorName].isComplete ? "bg-success" : "bg-danger"}`}>
+                  {hierarchy[vendorName].isComplete ? "Complete✔" : "Pending❌"}
+                </span>
               </div>
-              {selectedVendor === vendorName && selectedAgreement && (
-                <div className="card-body">
-                  <p>Agreement Hash: {selectedAgreement.agreementHash}</p>
-                  <p>
-                    IPFS CID: <a href={`https://gateway.pinata.cloud/ipfs/${selectedAgreement.ipfsCID}`} target="_blank" rel="noopener noreferrer">{selectedAgreement.ipfsCID}</a>
-                  </p>
-                  <p>Vendor Address: {selectedAgreement.vendor}</p>
-                  <p>Vendor Name: {selectedAgreement.vendorName}</p>
-                  <p>Agreement Status: <span style={{ color: selectedAgreement.isComplete ? "green" : "red" }}>{selectedAgreement.isComplete ? "Complete" : "Pending"}</span></p>
-                </div>
-              )}
+
+              {/* Sub-Agreements */}
               <div className="card-body">
                 {hierarchy[vendorName].subVendors.map((subVendor, subVendorIndex) => (
-                  <div key={`${vendorName}-${subVendorIndex}`} className="list-group-item" onClick={() => toggleSubAgreementView(subVendor.name, subVendor.agreementId, subVendor.id)} style={{ cursor: "pointer" }}>
-                    {vendorIndex}.{subVendorIndex} &nbsp; {subVendor.name}
+                  <div key={`${vendorName}-${subVendorIndex}`} onClick={(event) => toggleSubAgreementView(subVendor.name, subVendor.agreementId, subVendor.id, event)} className="list-group-item" style={{ cursor: "pointer" }}>
+                    {vendorIndex + 1}.{subVendorIndex + 1} &nbsp; {subVendor.name}&nbsp;&nbsp;
                     <span className={`badge ${subVendor.isComplete ? "bg-success" : "bg-danger"}`}>
-                      {subVendor.isComplete ? "Complete" : "Pending"}
+                      {subVendor.isComplete ? "Complete✔" : "Pending❌"}
                     </span>
-                    {selectedSubVendor === subVendor.name && selectedSubAgreement && (
-                      <div>
-                        <p>Sub-Agreement Hash: {selectedSubAgreement.agreementHash}</p>
-                        <p>
-                          IPFS CID: <a href={`https://gateway.pinata.cloud/ipfs/${selectedSubAgreement.ipfsCID}`} target="_blank" rel="noopener noreferrer">{selectedSubAgreement.ipfsCID}</a>
-                        </p>
-                        <p>Sub-Vendor Address: {selectedSubAgreement.subVendor}</p>
-                        <p>Sub-Vendor Name: {selectedSubAgreement.subVendorName}</p>
-                      </div>
-                    )}
                   </div>
                 ))}
               </div>
@@ -139,6 +132,10 @@ function Home({ contract, account }) {
           </div>
         ))}
       </div>
+
+      {contextMenu.visible && (
+        <ContextMenu x={contextMenu.x} y={contextMenu.y} content={contextMenu.content} />
+      )}
     </div>
   );
 }

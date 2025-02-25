@@ -1,0 +1,96 @@
+/* Layout.css */
+
+.main-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .ribbon {
+    display: flex;
+    gap: 15px;
+    background: #007bff;
+    padding: 7px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .ribbon a {
+    color: yellow;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .home-icon {
+    height: 30px;
+  }
+  
+  .contract-logo {
+    height: 60px;
+    padding-top: 20px;
+  }
+  
+  .connect-wallet {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .connect-wallet button {
+    padding: 2px 4px;
+    font-size: 1rem;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: rgb(255, 247, 0);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .connect-wallet button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  .connect-wallet button:active {
+    transform: scale(1);
+  }
+  
+  /* Status Bulb Animation */
+  .status-bulb {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-left: 5px;
+  }
+
+  .connected-status {
+    background-color: #0800ff;
+    color: yellow;
+    padding: 5px;
+  }
+  
+  .red {
+    background-color: red;
+    box-shadow: 0 0 8px red;
+    animation: blink-red 1.5s infinite alternate;
+  }
+  
+  .green {
+    background-color: limegreen;
+    box-shadow: 0 0 8px limegreen;
+    animation: blink-green 1.5s infinite alternate;
+  }
+  
+  @keyframes blink-red {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+  }
+  
+  @keyframes blink-green {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+  }
+  

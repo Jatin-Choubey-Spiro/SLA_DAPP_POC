@@ -1,17 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FileUpload from "./FileUpload";
 import "./Home.css"; // Import Home.css for styling
 
 function CreateSubAgreement({ contract, account }) {
   const [subAgreementInput, setSubAgreementInput] = useState({
-    agreementId: "",
     agreementHash: "",
     ipfsCID: "",
-    owningVendor: account, // Spiro as owner
-    owningVendorName: "Spiro EV",
     subVendor: "",
     subVendorName: "",
   });
+
+  const [vendorAgreementId, setVendorAgreementId] = useState(null);
+
+  // Fetch Vendor Agreement ID based on connected account
+  useEffect(() => {
+    const fetchVendorAgreementId = async () => {
+      if (!contract || !account) return;
+  
+      try {
+        const agreementCount = await contract.methods.agreementCount().call();
+  
+        for (let i = 0; i < agreementCount; i++) {
+          const agreement = await contract.methods.viewAgreement(i).call();
+          if (agreement.vendor.toLowerCase() === account.toLowerCase()) {
+            setVendorAgreementId(i);
+            setSubAgreementInput((prevState) => ({
+              ...prevState,
+              owningVendorName: agreement.vendorName, // Fetch vendor name
+            }));
+            return;
+          }
+        }
+        console.error("No agreement found for this vendor");
+      } catch (error) {
+        console.error("Error fetching vendor agreement ID:", error);
+      }
+    };
+  
+    fetchVendorAgreementId();
+  }, [contract, account]);
+  
 
   const handleSubFileUpload = (hash, cid) => {
     setSubAgreementInput((prevState) => ({
@@ -22,16 +50,21 @@ function CreateSubAgreement({ contract, account }) {
   };
 
   const addSubAgreement = async () => {
-    const { agreementId, agreementHash, ipfsCID, owningVendor, owningVendorName, subVendor, subVendorName } = subAgreementInput;
-    
     if (!contract) {
       console.error("Contract is not defined");
       return;
     }
 
+    if (vendorAgreementId === null) {
+      alert("Error: No agreement found for this vendor.");
+      return;
+    }
+
+    const { agreementHash, ipfsCID, subVendor, subVendorName, owningVendorName } = subAgreementInput;
+
     try {
-      // Call Smart Contract
-      const tx = await contract.methods.createSubAgreement(agreementId, agreementHash, ipfsCID, subVendor, subVendorName).send({ from: account });
+      // Call Smart Contract with the fetched `vendorAgreementId`
+      const tx = await contract.methods.createSubAgreement(vendorAgreementId, agreementHash, ipfsCID, subVendor, subVendorName).send({ from: account });
       const transactionHash = tx.transactionHash;
 
       // Store in PostgreSQL
@@ -41,8 +74,8 @@ function CreateSubAgreement({ contract, account }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          owning_vendor_name: owningVendorName,
-          owning_vendor_address: owningVendor,
+          owning_vendor_name: owningVendorName, // Now correctly populated
+          owning_vendor_address: account,
           sub_vendor_name: subVendorName,
           sub_vendor_address: subVendor,
           ipfsCID,
@@ -67,13 +100,6 @@ function CreateSubAgreement({ contract, account }) {
   return (
     <div className="closeElem">
       <h2>Add Sub-Agreement</h2>
-      <input
-        type="number"
-        placeholder="Agreement ID"
-        onChange={(e) =>
-          setSubAgreementInput({ ...subAgreementInput, agreementId: e.target.value })
-        }
-      />
       <FileUpload onFileUpload={handleSubFileUpload} />
       <input
         type="text"

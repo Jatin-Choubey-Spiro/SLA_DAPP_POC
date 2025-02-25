@@ -1,33 +1,19 @@
-import React, { useState } from "react";
-import "./Home.css";
+import React from "react";
 
-function SignMainAgreement({ contract, account }) {
-  const [signMainInput, setSignMainInput] = useState("");
-  const [isAgreementComplete, setIsAgreementComplete] = useState(false);
-
-  const checkAgreementStatus = async (agreementId) => {
-    try {
-      const agreement = await contract.methods.viewAgreement(agreementId).call();
-      setIsAgreementComplete(agreement.isComplete);
-    } catch (error) {
-      console.error("Error fetching agreement status:", error);
-      setIsAgreementComplete(false);
-    }
-  };
-
+const SignMainAgreement = ({ agreementId, contract, account, isAgreementComplete }) => {
   const signMainAgreement = async () => {
     try {
-      const mainAgreement = await contract.methods.viewAgreement(signMainInput).call();
+      const mainAgreement = await contract.methods.viewAgreement(agreementId).call();
       const subAgreementCount = mainAgreement.subAgreementCount;
 
       for (let i = 0; i < subAgreementCount; i++) {
-        const subAgreement = await contract.methods.viewSubAgreement(signMainInput, i).call();
+        const subAgreement = await contract.methods.viewSubAgreement(agreementId, i).call();
         if (!subAgreement.isComplete) {
           alert("Sub Agreements not completed");
           return;
         }
       }
-      await contract.methods.signAgreement(signMainInput).send({ from: account });
+      await contract.methods.signAgreement(agreementId).send({ from: account });
       alert("Main agreement signed successfully.");
     } catch (error) {
       console.error("Error signing main agreement:", error);
@@ -36,32 +22,18 @@ function SignMainAgreement({ contract, account }) {
   };
 
   return (
-    <div className="closeElem">
-      <h2>Sign Main Agreement</h2>
-      <input
-        type="number"
-        placeholder="Agreement ID"
-        onChange={(e) => {
-          const id = e.target.value;
-          setSignMainInput(id);
-          checkAgreementStatus(id);
-        }}
-      />
-      <div className="btn-cont">
-        <button
-          onClick={signMainAgreement}
-          disabled={isAgreementComplete}
-          style={{
-            backgroundColor: isAgreementComplete ? "grey" : "blue",
-            color: isAgreementComplete ? "darkgrey" : "white",
-            cursor: isAgreementComplete ? "not-allowed" : "pointer",
-          }}
-        >
-          {isAgreementComplete ? "Agreement Complete" : "Sign Agreement"}
-        </button>
-      </div>
-    </div>
+    <button
+      onClick={signMainAgreement}
+      disabled={isAgreementComplete}
+      style={{
+        backgroundColor: isAgreementComplete ? "grey" : "blue",
+        color: isAgreementComplete ? "darkgrey" : "white",
+        cursor: isAgreementComplete ? "not-allowed" : "pointer",
+      }}
+    >
+      {isAgreementComplete ? "Agreement Complete" : "Sign Agreement"}
+    </button>
   );
-}
+};
 
 export default SignMainAgreement;

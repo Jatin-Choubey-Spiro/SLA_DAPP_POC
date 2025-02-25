@@ -11,7 +11,7 @@ import SignSubAgreement from "./components/SignSubAgreement";
 import ViewMainAgreement from "./components/ViewMainAgreement";
 import ViewSubAgreement from "./components/ViewSubAgreement";
 import Layout from "./components/Layout";
-import Web3 from "web3";
+import Web3, { eth } from "web3";
 import SpiroAgreementManager from "./build/contracts/SpiroAgreementManager.json";
 
 import spiro from "./pics/spiro.png";   // Importing images
@@ -24,7 +24,7 @@ import Slide3 from "./Guide/Slide3.PNG";
 import Slide4 from "./Guide/Slide4.PNG";
 import Slide5 from "./Guide/Slide5.PNG";
 
-const contractAddress = "0xDC3342E84fbe138057e3f76133111C834EC1AA2d";
+const contractAddress = "0x94d685c4e3b34213989Fc9ebD3B1C882b0c63b15";
 const apiKey = "58cbbf110630457787d8a099f8b70b06";
 
 const App = () => {
@@ -90,23 +90,41 @@ const App = () => {
     const gasUsed = 2267805;
   
     // Fetch the current gas price
-    await fetchGasPrice();
-    await fetchEthPrice();
+  //   try {
+  //       await fetchGasPrice();
+  //   } catch (error) {
+  //       console.error("Error fetching gas or ETH price:", error);
+  //   }
+
+  //   try {
+  //     await fetchEthPrice();
+  // } catch (error) {
+  //     console.error("Error fetching gas or ETH price:", error);
+  // }
   
+  await fetchGasPrice();
+  await fetchEthPrice();
+
+    // console.log("gasprice->> " + gasPrice[0].estimatedFee + ", " + gasPrice[1].estimatedFee + ", " + gasPrice[2].estimatedFee + ", " + gasPrice[3].estimatedFee);
+    // console.log("ETH = " + ethPrice);
     if (gasPrice && ethPrice) {
-      // Assuming gasPrice[1].estimatedFee is the average gas price in Gwei
-      const gasPriceInGwei = gasPrice[1].estimatedFee;
-      const gasPriceInEth = gasPriceInGwei / 1e9; // Convert Gwei to ETH
-  
-      // Calculate the transaction cost in ETH
-      const transactionCostInEth = gasUsed * gasPriceInEth;
-  
-      // Convert the transaction cost to USD
-      const transactionCostInUsd = transactionCostInEth * ethPrice;
-  
-      setTransactionCost(transactionCostInUsd);
+            // Assuming gasPrice[1].estimatedFee is the average gas price in Gwei
+            const gasPriceInGwei = gasPrice[1].estimatedFee;
+            const gasPriceInEth = gasPriceInGwei / 1e9; // Convert Gwei to ETH
+        
+            // Calculate the transaction cost in ETH
+            const transactionCostInEth = gasUsed * gasPriceInEth;
+        
+            // Convert the transaction cost to USD
+              const transactionCostInUsd = transactionCostInEth * ethPrice;
+              setTransactionCost(transactionCostInUsd);
+              console.log("gasprice->> " + gasPrice[0].estimatedFee + ", " + gasPrice[1].estimatedFee + ", " + gasPrice[2].estimatedFee + ", " + gasPrice[3].estimatedFee);
+              console.log("ETH = " + ethPrice);
     } else {
-      alert("Failed to fetch gas price or ETH price. Please try again.");
+      alert("Failed to fetch gas price");
+            console.log("ETH = " + ethPrice);
+            console.log("gasprice->> " + gasPrice[0].estimatedFee + ", " + gasPrice[1].estimatedFee + ", " + gasPrice[2].estimatedFee + ", " + gasPrice[3].estimatedFee);
+            
     }
   };
 
@@ -131,8 +149,8 @@ const App = () => {
               <Route path="/" element={<Home contract={contract} account={account} />} />
               <Route path="/create-main-agreement" element={<CreateMainAgreement contract={contract} account={account} />} />
               <Route path="/create-sub-agreement" element={<CreateSubAgreement contract={contract} account={account} />} />
-              <Route path="/sign-main-agreement" element={<SignMainAgreement contract={contract} account={account} />} />
-              <Route path="/sign-sub-agreement" element={<SignSubAgreement contract={contract} account={account} />} />
+              {/* <Route path="/sign-main-agreement" element={<SignMainAgreement contract={contract} account={account} />} />
+              <Route path="/sign-sub-agreement" element={<SignSubAgreement contract={contract} account={account} />} /> */}
               {/* <Route path="/view-main-agreement" element={<ViewMainAgreement contract={contract} account={account} />} />
               <Route path="/view-sub-agreement" element={<ViewSubAgreement contract={contract} account={account} />} /> */}
             </Routes>
@@ -141,27 +159,27 @@ const App = () => {
           <Login onLogin={handleLogin} />
         )}
 
-        <button
-          onClick={() => setShowPreview(true)}
-          style={{
-            position: "fixed",
-            bottom: "15px",
-            left: "15px",
-            background: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "10%",
-            width: "120px",
-            height: "60px",
-            fontSize: "15px",
-            cursor: "pointer",
-            boxShadow: "0px 2px 5px rgba(0,0,0,0.3)"
-          }}
-        >
-          About Platform🔍
-        </button>
+<button
+  onClick={() => setShowPreview(true)}
+  style={{
+    position: "fixed",
+    bottom: "15px",
+    right: "15px",
+    background: "#007bff",
+    color: "white",
+    border: "none",
+    borderRadius: "50%",
+    width: "60px",
+    height: "60px",
+    fontSize: "20px",
+    cursor: "pointer",
+    boxShadow: "0px 2px 5px rgba(0,0,0,0.3)"
+  }}
+>
+  🔍
+</button>
 
-        {showPreview && (
+  {showPreview && (
   <div
     style={{
       position: "fixed",

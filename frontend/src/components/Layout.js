@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./Home.css"; // Import Home.css for styling
+import "./Layout.css"; // Import Layout.css for styling
 import homeIcon from "./logos/image.png"; // Import the image
 import contractZ from "./logos/contractZ.png";
 
@@ -13,29 +13,21 @@ const Layout = ({ account, connectWallet, children }) => {
         </Link>
         <Link to="/create-main-agreement">Create Main Agreement</Link>
         <Link to="/create-sub-agreement">Create Sub Agreement</Link>
-        <Link to="/sign-main-agreement">Sign Main Agreement</Link>
-        <Link to="/sign-sub-agreement">Sign Sub Agreement</Link>
-        {/* <Link to="/view-main-agreement">View Main Agreement</Link>
-        <Link to="/view-sub-agreement">View Sub Agreement</Link> */}
       </div>
       <div className="main-content">
-      <h1>
-      <img src={contractZ} alt="Spiro Agreement Manager" style={{ height: "80px", padding: "20px"}} />
-    </h1>
+        <h1>
+          <img src={contractZ} alt="Spiro Agreement Manager" className="contract-logo" />
+        </h1>
         <div className="connect-wallet">
-          {!account && <button onClick={connectWallet}>Connect Wallet</button>}
+          {!account && (
+            <button onClick={connectWallet} className="connect-button">
+              Connect Web3 <span className="status-bulb red"></span>
+            </button>
+          )}
         </div>
         {account && (
-          <p
-            style={{
-              backgroundColor: "blue",
-              color: "yellow",
-              padding: "10px",
-              borderRadius: "5px",
-              textAlign: "center",
-            }}
-          >
-            Connected Account :: {account}
+          <p className="connected-status">
+            Connected : {account} <span className="status-bulb green"></span>
           </p>
         )}
         {children}
